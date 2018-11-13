@@ -16,6 +16,7 @@
   "dependencies": {
     "config": "^2.0.1",
     "mongodb": "^3.1.9",
+    "mongoose": "^5.3.11",
     "nodemon": "^1.18.6"
   }
 }
