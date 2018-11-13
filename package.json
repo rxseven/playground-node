@@ -12,5 +12,8 @@
   "bugs": {
     "url": "https://github.com/rxseven/playground-node/issues"
   },
-  "homepage": "https://github.com/rxseven/playground-node#readme"
+  "homepage": "https://github.com/rxseven/playground-node#readme",
+  "dependencies": {
+    "nodemon": "^1.18.6"
+  }
 }
