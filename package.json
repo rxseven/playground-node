@@ -1,0 +1,16 @@
+{
+  "name": "playground-node",
+  "version": "0.0.1",
+  "description": "Node Playground",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://rxseven@github.com/rxseven/playground-node.git"
+  },
+  "author": "Theerawat Pongsupawat",
+  "license": "AGPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/rxseven/playground-node/issues"
+  },
+  "homepage": "https://github.com/rxseven/playground-node#readme"
+}
