@@ -13,6 +13,9 @@
     "url": "https://github.com/rxseven/playground-node/issues"
   },
   "homepage": "https://github.com/rxseven/playground-node#readme",
+  "scripts": {
+    "start": "node src/server/server.js"
+  },
   "dependencies": {
     "body-parser": "^1.18.3",
     "config": "^2.0.1",
