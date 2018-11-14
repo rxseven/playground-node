@@ -3,8 +3,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 const { mongoose } = require('./db/mongoose');
-const { Todo } = require('../models/Todo');
-const { User } = require('../models/User');
+const { Todo } = require('./models/Todo');
+const { User } = require('./models/User');
 
 // Create Express server
 const app = express();
