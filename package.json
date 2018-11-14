@@ -15,7 +15,8 @@
   "homepage": "https://github.com/rxseven/playground-node#readme",
   "scripts": {
     "start": "node src/server/server.js",
-    "start:watch": "nodemon src/server/server.js"
+    "start:watch": "nodemon src/server/server.js",
+    "test": "mocha src/server/**/*.test.js"
   },
   "dependencies": {
     "body-parser": "^1.18.3",
