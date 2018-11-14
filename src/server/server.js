@@ -18,4 +18,4 @@ app.listen(process.env.PORT || 5000, () => {
 });
 
 // Module exports
-module.exports = app;
+module.exports = { app };
