@@ -1,0 +1,6 @@
+{
+  // File associations to languages
+  "files.associations": {
+    ".prettierrc": "json"
+  }
+}
