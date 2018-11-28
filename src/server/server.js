@@ -31,6 +31,19 @@ app.post('/todos', (req, res) => {
   })
 });
 
+// Get todos
+app.get('/todos', (req, res) => {
+  Todo.find().then((todos) => {
+    res
+      .status(200)
+      .send({todos});
+  }, (error) => {
+    res
+      .status(400)
+      .send(error);
+  });
+});
+
 // Bind and listen for connections on the specified host and port
 app.listen(process.env.PORT || 5000, () => {
   console.log('Server is listening on port 5000');
