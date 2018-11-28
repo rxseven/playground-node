@@ -6,11 +6,14 @@ const { app } = require('../server');
 const { Todo } = require('../models/Todo');
 
 // Initial todos
-const TODOS = [{
-  text: 'Buy pencils'
-}, {
-  text: 'Pay internet bill'
-}];
+const TODOS = [
+  {
+    text: 'Buy pencils'
+  },
+  {
+    text: 'Pay internet bill'
+  }
+];
 
 // Configuration
 beforeEach(function(done) {
@@ -18,9 +21,11 @@ beforeEach(function(done) {
   this.timeout(0);
 
   // Remove all documents from todos collection
-  Todo.deleteMany({}).then(() => {
-    return Todo.insertMany(TODOS);
-  }).then(() => done());
+  Todo.deleteMany({})
+    .then(() => {
+      return Todo.insertMany(TODOS);
+    })
+    .then(() => done());
 });
 
 // Test suites
@@ -28,7 +33,7 @@ describe('POST /todos', function() {
   // Disable timeout for test suite
   this.timeout(0);
 
-  it('should create a new todo', (done) => {
+  it('should create a new todo', done => {
     // Variables
     const text = 'Test todo text';
 
@@ -37,7 +42,7 @@ describe('POST /todos', function() {
       .post('/todos')
       .send({ text })
       .expect(201)
-      .expect((res) => {
+      .expect(res => {
         expect(res.body.text).toBe(text);
       })
       .end((err, res) => {
@@ -45,15 +50,17 @@ describe('POST /todos', function() {
           return done(err);
         }
 
-        Todo.find({ text }).then((todos) => {
-          expect(todos.length).toBe(1);
-          expect(todos[0].text).toBe(text);
-          done();
-        }).catch((err) => done(err));
+        Todo.find({ text })
+          .then(todos => {
+            expect(todos.length).toBe(1);
+            expect(todos[0].text).toBe(text);
+            done();
+          })
+          .catch(err => done(err));
       });
   });
 
-  it('should not create todo with invalid body data', (done) => {
+  it('should not create todo with invalid body data', done => {
     // Assertions
     request(app)
       .post('/todos')
@@ -64,10 +71,12 @@ describe('POST /todos', function() {
           return done(err);
         }
 
-        Todo.find().then((todos) => {
-          expect(todos.length).toBe(2);
-          done();
-        }).catch((err) => done(err));
+        Todo.find()
+          .then(todos => {
+            expect(todos.length).toBe(2);
+            done();
+          })
+          .catch(err => done(err));
       });
   });
 });
