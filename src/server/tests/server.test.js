@@ -99,3 +99,39 @@ describe('GET /todos', function() {
       .end(done);
   });
 });
+
+// Test suite
+describe('GET /todos/:id', function() {
+  // Disable timeout for test suite
+  this.timeout(0);
+
+  it('should return todo document', done => {
+    request(app)
+      .get(`/todos/${TODOS[0]._id.toHexString()}`)
+      .expect(200)
+      .expect(res => {
+        expect(res.body.todo.text).toBe(TODOS[0].text);
+      })
+      .end(done);
+  });
+
+  it('should return 404 if todo not found', done => {
+    // Generate random object ID
+    const id = new ObjectID().toHexString();
+
+    request(app)
+      .get(`/todos/${id}`)
+      .expect(404)
+      .end(done);
+  });
+
+  it('should return 404 for non-object IDs', done => {
+    // Generate invalid object ID
+    const id = 'invalidId';
+
+    request(app)
+      .get(`/todos/${id}`)
+      .expect(404)
+      .end(done);
+  });
+});
