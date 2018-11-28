@@ -28,7 +28,7 @@ beforeEach(function(done) {
     .then(() => done());
 });
 
-// Test suites
+// Test suite
 describe('POST /todos', function() {
   // Disable timeout for test suite
   this.timeout(0);
