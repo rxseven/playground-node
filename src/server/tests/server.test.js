@@ -1,5 +1,6 @@
 // Module dependencies
 const expect = require('expect');
+const { ObjectID } = require('mongodb');
 const request = require('supertest');
 
 const { app } = require('../server');
@@ -8,9 +9,11 @@ const { Todo } = require('../models/Todo');
 // Initial todos
 const TODOS = [
   {
+    _id: new ObjectID(),
     text: 'Buy pencils'
   },
   {
+    _id: new ObjectID(),
     text: 'Pay internet bill'
   }
 ];
