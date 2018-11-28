@@ -135,3 +135,53 @@ describe('GET /todos/:id', function() {
       .end(done);
   });
 });
+
+// Test suite
+describe('DELETE /todos/:id', function() {
+  // Disable timeout for test suite
+  this.timeout(0);
+
+  it('should delete a todo', done => {
+    // Generate object ID from the initial todo item
+    const id = TODOS[1]._id.toHexString();
+
+    request(app)
+      .delete(`/todos/${id}`)
+      .expect(200)
+      .expect(res => {
+        expect(res.body.todo._id).toBe(id);
+      })
+      .end((error, res) => {
+        if (error) {
+          return done(error);
+        }
+
+        Todo.findById(id)
+          .then(todo => {
+            expect(todo).toBeFalsy();
+            done();
+          })
+          .catch(error => done(error));
+      });
+  });
+
+  it('should return 404 if todo not found', done => {
+    // Generate random object ID
+    const id = new ObjectID().toHexString();
+
+    request(app)
+      .delete(`/todos/${id}`)
+      .expect(404)
+      .end(done);
+  });
+
+  it('should return 404 for non-object IDs', done => {
+    // Generate invalid object ID
+    const id = 'invalidId';
+
+    request(app)
+      .delete(`/todos/${id}`)
+      .expect(404)
+      .end(done);
+  });
+});
