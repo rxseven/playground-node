@@ -14,7 +14,9 @@ const TODOS = [
   },
   {
     _id: new ObjectID(),
-    text: 'Pay internet bill'
+    text: 'Pay internet bill',
+    completed: true,
+    completedAt: 1543416161337
   }
 ];
 
@@ -181,6 +183,54 @@ describe('DELETE /todos/:id', function() {
 
     request(app)
       .delete(`/todos/${id}`)
+      .expect(404)
+      .end(done);
+  });
+});
+
+// Test suite
+describe('PATCH /todos/:id', function() {
+  // Disable timeout for test suite
+  this.timeout(0);
+
+  it('should update a todo', done => {
+    // Generate object ID from the initial todo item
+    const id = TODOS[1]._id.toHexString();
+
+    // Expected text string
+    const text = 'Merge to master and deploy to the production server';
+
+    request(app)
+      .patch(`/todos/${id}`)
+      .send({
+        completed: true,
+        text
+      })
+      .expect(200)
+      .expect(res => {
+        expect(res.body.todo.text).toBe(text);
+        expect(res.body.todo.completed).toBe(true);
+        expect(typeof res.body.todo.completedAt).toBe('number');
+      })
+      .end(done);
+  });
+
+  it('should return 404 if todo not found', done => {
+    // Generate random object ID
+    const id = new ObjectID().toHexString();
+
+    request(app)
+      .patch(`/todos/${id}`)
+      .expect(404)
+      .end(done);
+  });
+
+  it('should return 404 for non-object IDs', done => {
+    // Generate invalid object ID
+    const id = 'invalidId';
+
+    request(app)
+      .patch(`/todos/${id}`)
       .expect(404)
       .end(done);
   });
