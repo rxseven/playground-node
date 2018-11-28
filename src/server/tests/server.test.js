@@ -5,13 +5,22 @@ const request = require('supertest');
 const { app } = require('../server');
 const { Todo } = require('../models/Todo');
 
+// Initial todos
+const TODOS = [{
+  text: 'Buy pencils'
+}, {
+  text: 'Pay internet bill'
+}];
+
 // Configuration
 beforeEach(function(done) {
   // Disable timeout for a hook
   this.timeout(0);
 
   // Remove all documents from todos collection
-  Todo.deleteMany({}).then(() => done());
+  Todo.deleteMany({}).then(() => {
+    return Todo.insertMany(TODOS);
+  }).then(() => done());
 });
 
 // Test suites
@@ -36,7 +45,7 @@ describe('POST /todos', function() {
           return done(err);
         }
 
-        Todo.find().then((todos) => {
+        Todo.find({ text }).then((todos) => {
           expect(todos.length).toBe(1);
           expect(todos[0].text).toBe(text);
           done();
@@ -56,7 +65,7 @@ describe('POST /todos', function() {
         }
 
         Todo.find().then((todos) => {
-          expect(todos.length).toBe(0);
+          expect(todos.length).toBe(2);
           done();
         }).catch((err) => done(err));
       });
