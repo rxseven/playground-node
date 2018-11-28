@@ -1,6 +1,7 @@
 // Module dependencies
 const express = require('express');
 const bodyParser = require('body-parser');
+const { ObjectID } = require('mongodb');
 
 const { mongoose } = require('./db/mongoose');
 const { Todo } = require('./models/Todo');
@@ -40,6 +41,30 @@ app.get('/todos', (req, res) => {
       res.status(400).send(error);
     }
   );
+});
+
+// Get todo
+app.get('/todos/:id', (req, res) => {
+  // Variables
+  const { id } = req.params;
+
+  // Check invalid ID
+  if (!ObjectID.isValid(id)) {
+    return res.status(404).send({ message: 'Invalid Todo ID' });
+  }
+
+  // Get todo by ID
+  Todo.findById(id)
+    .then(todo => {
+      if (!todo) {
+        return res.status(404).send({ message: 'Todo not found' });
+      }
+
+      res.status(200).send({ todo });
+    })
+    .catch(error => {
+      res.status(400).send({ message: 'Something went wrong' });
+    });
 });
 
 // Bind and listen for connections on the specified host and port
