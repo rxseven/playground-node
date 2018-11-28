@@ -1,6 +1,7 @@
 // Module dependencies
 const express = require('express');
 const bodyParser = require('body-parser');
+const _ = require('lodash');
 const { ObjectID } = require('mongodb');
 
 const { mongoose } = require('./db/mongoose');
@@ -85,6 +86,39 @@ app.delete('/todos/:id', (req, res) => {
       }
 
       res.status(200).send({ todo });
+    })
+    .catch(error => {
+      res.status(400).send({ message: 'Something went wrong' });
+    });
+});
+
+// Update todo
+app.patch('/todos/:id', (req, res) => {
+  // Variables
+  const { id } = req.params;
+  const body = _.pick(req.body, ['text', 'completed']);
+
+  // Check invalid ID
+  if (!ObjectID.isValid(id)) {
+    return res.status(404).send({ message: 'Invalid Todo ID' });
+  }
+
+  // Update todo properties
+  if (_.isBoolean(body.completed) && body.completed) {
+    body.completedAt = new Date().getTime();
+  } else {
+    body.completed = false;
+    body.completedAt = null;
+  }
+
+  // Save changes
+  Todo.findByIdAndUpdate(id, { $set: body }, { new: true })
+    .then(todo => {
+      if (!todo) {
+        return res.status(404).send({ message: 'Todo not found' });
+      }
+
+      res.send({ todo });
     })
     .catch(error => {
       res.status(400).send({ message: 'Something went wrong' });
