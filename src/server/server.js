@@ -20,28 +20,26 @@ app.post('/todos', (req, res) => {
   });
 
   // Save the document
-  todo.save().then((document) => {
-    res
-      .status(201)
-      .send(document);
-  }, (error) => {
-    res
-      .status(400)
-      .send(error);
-  })
+  todo.save().then(
+    document => {
+      res.status(201).send(document);
+    },
+    error => {
+      res.status(400).send(error);
+    }
+  );
 });
 
 // Get todos
 app.get('/todos', (req, res) => {
-  Todo.find().then((todos) => {
-    res
-      .status(200)
-      .send({todos});
-  }, (error) => {
-    res
-      .status(400)
-      .send(error);
-  });
+  Todo.find().then(
+    todos => {
+      res.status(200).send({ todos });
+    },
+    error => {
+      res.status(400).send(error);
+    }
+  );
 });
 
 // Bind and listen for connections on the specified host and port
