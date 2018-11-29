@@ -1,0 +1,15 @@
+{
+  // Prettier
+  // Format a file on save.
+  "editor.formatOnSave": true,
+
+  // File associations to languages
+  "files.associations": {
+    ".prettierrc": "json"
+  },
+
+  // Prettier
+  // Disable the default JavaScript formatter (editor’s built-in) and allows
+  // Prettier to handle code formatting.
+  "javascript.format.enable": false
+}
