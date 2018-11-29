@@ -4,8 +4,13 @@ RESTful API for Todo app built with Node, Express, JWT and MongoDB & Mongoose.
 
 ## Table of Contents
 
+- [Changelog](#changelog)
 - [Acknowledgements](#acknowledgements)
 - [Licenses](#licenses)
+
+## Changelog
+
+See [releases](https://github.com/rxseven/playground-node/releases).
 
 ## Acknowledgements
 
