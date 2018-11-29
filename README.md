@@ -4,7 +4,12 @@ RESTful API for Todo app built with Node, Express, JWT and MongoDB & Mongoose.
 
 ## Table of Contents
 
+- [Acknowledgements](#acknowledgements)
 - [Licenses](#licenses)
+
+## Acknowledgements
+
+This repository is maintained by [Theerawat Pongsupawat](http://www.rxseven.com), frontend developer from Chiang Mai, Thailand.
 
 ## Licenses
 
