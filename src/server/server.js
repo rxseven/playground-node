@@ -143,7 +143,7 @@ app.post('/users', (req, res) => {
     })
     .then(token => {
       res
-        .status(200)
+        .status(201)
         .header({ 'x-auth': token })
         .send(user);
     })
