@@ -125,6 +125,32 @@ app.patch('/todos/:id', (req, res) => {
     });
 });
 
+// Add user
+app.post('/users', (req, res) => {
+  // Pick off properties from the request body and return a new object
+  const body = _.pick(req.body, ['email', 'password']);
+
+  // Crate a new user instance
+  const user = new User(body);
+
+  // Create a document
+  user
+    .save()
+    .then(() => {
+      // Generate JWT for the user instance
+      return user.generateAuthToken();
+    })
+    .then(token => {
+      res
+        .status(200)
+        .header({ 'x-auth': token })
+        .send(user);
+    })
+    .catch(error => {
+      res.status(400).send(error);
+    });
+});
+
 // Bind and listen for connections on the specified host and port
 app.listen(process.env.PORT || 5000, () => {
   console.log('Server is listening on port 5000');
