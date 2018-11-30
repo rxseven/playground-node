@@ -1,8 +1,10 @@
 // Module dependencies
+const config = require('config');
 const express = require('express');
 const bodyParser = require('body-parser');
 const _ = require('lodash');
 const { ObjectID } = require('mongodb');
+const morgan = require('morgan');
 
 const { mongoose } = require('./db/mongoose');
 const { authenticate } = require('./middleware/authenticate');
@@ -14,6 +16,11 @@ const app = express();
 
 // Body parsing
 app.use(bodyParser.json());
+
+// Logger
+if (config.util.getEnv('NODE_ENV') !== 'test') {
+  app.use(morgan('dev'));
+}
 
 // Add todo
 app.post('/todos', (req, res) => {
