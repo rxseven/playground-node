@@ -1,4 +1,5 @@
 // Module dependencies
+const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const _ = require('lodash');
 const mongoose = require('mongoose');
@@ -84,6 +85,28 @@ UserSchema.methods.generateAuthToken = function() {
   // Save the document and return a Promise including the token
   return user.save().then(() => token);
 };
+
+// Do something before saving the document
+UserSchema.pre('save', function(next) {
+  // Variables
+  const user = this;
+
+  // Encrypt the password if it was modified
+  if (user.isModified('password')) {
+    bcrypt.genSalt(10, (error, salt) => {
+      bcrypt.hash(user.password, salt, (error, hash) => {
+        // Update the plain password with the hashed one
+        user.password = hash;
+
+        // Call the next middleware
+        next();
+      });
+    });
+  } else {
+    // Call the next middleware
+    next();
+  }
+});
 
 // Model
 const User = mongoose.model('User', UserSchema);
