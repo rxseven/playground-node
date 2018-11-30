@@ -204,6 +204,28 @@ describe('PATCH /todos/:id', function() {
       .end(done);
   });
 
+  it('should clear completeAt property when todo is not completed', done => {
+    // Generate object ID from the initial todo item
+    const id = TODOS[1]._id.toHexString();
+
+    // Expected text string
+    const text = 'Fix typo';
+
+    request(app)
+      .patch(`/todos/${id}`)
+      .send({
+        completed: false,
+        text
+      })
+      .expect(200)
+      .expect(res => {
+        expect(res.body.todo.text).toBe(text);
+        expect(res.body.todo.completed).toBe(false);
+        expect(res.body.todo.completedAt).toBeFalsy();
+      })
+      .end(done);
+  });
+
   it('should return 404 if todo not found', done => {
     // Generate random object ID
     const id = new ObjectID().toHexString();
