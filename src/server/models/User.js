@@ -36,6 +36,27 @@ const UserSchema = new mongoose.Schema({
   ]
 });
 
+// Find user by token (model method)
+UserSchema.statics.findByToken = function(token) {
+  // Variables
+  const user = this;
+  let decoded;
+
+  // Verify the token
+  try {
+    decoded = jwt.verify(token, 'somesecret');
+  } catch (error) {
+    return Promise.reject();
+  }
+
+  // Find the associate user if any and return a Promise
+  return User.findOne({
+    _id: decoded._id,
+    'tokens.access': 'auth',
+    'tokens.token': token
+  });
+};
+
 // toJSON (overriding the Mongoose method)
 UserSchema.methods.toJSON = function() {
   // Variables
