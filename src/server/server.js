@@ -5,6 +5,7 @@ const _ = require('lodash');
 const { ObjectID } = require('mongodb');
 
 const { mongoose } = require('./db/mongoose');
+const { authenticate } = require('./middleware/authenticate');
 const { Todo } = require('./models/Todo');
 const { User } = require('./models/User');
 
@@ -149,6 +150,12 @@ app.post('/users', (req, res) => {
     .catch(error => {
       res.status(400).send(error);
     });
+});
+
+// Get user
+app.get('/users/me', authenticate, (req, res) => {
+  console.log('user:', req.user);
+  res.status(200).send(req.user);
 });
 
 // Bind and listen for connections on the specified host and port
