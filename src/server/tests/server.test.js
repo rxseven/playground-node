@@ -5,6 +5,7 @@ const request = require('supertest');
 
 const { app } = require('../server');
 const { Todo } = require('../models/Todo');
+const { User } = require('../models/User');
 
 const { populateTodos, populateUsers, TODOS, USERS } = require('./seed/seed');
 
@@ -271,6 +272,61 @@ describe('GET /users/me', function() {
       .expect(res => {
         expect(res.body).toEqual({ message: 'Unauthorized' });
       })
+      .end(done);
+  });
+});
+
+// Test suite
+describe('POST /users', function() {
+  // Disable timeout for test suite
+  this.timeout(0);
+
+  it('should create a user', done => {
+    // Variables
+    const email = 'montri@mail.com';
+    const password = 'somepassword';
+
+    request(app)
+      .post('/users')
+      .send({ email, password })
+      .expect(201)
+      .expect(res => {
+        expect(res.headers['x-auth']).toBeTruthy();
+        expect(res.body._id).toBeTruthy();
+        expect(res.body.email).toBe(email);
+      })
+      .end(error => {
+        if (error) {
+          return done(error);
+        }
+
+        User.findOne({ email }).then(user => {
+          expect(user).toBeTruthy();
+          expect(user.password).not.toBe(password);
+          done();
+        });
+      });
+  });
+
+  it('should return validation errors if request invalid', done => {
+    request(app)
+      .post('/users')
+      .send({
+        email: 'invalidEmail.com',
+        password: 'short'
+      })
+      .expect(400)
+      .end(done);
+  });
+
+  it('should not create user if email in use', done => {
+    request(app)
+      .post('/users')
+      .send({
+        email: USERS[0].email,
+        email: USERS[0].password
+      })
+      .expect(400)
       .end(done);
   });
 });
