@@ -1,5 +1,6 @@
 // Module dependencies
 const jwt = require('jsonwebtoken');
+const _ = require('lodash');
 const mongoose = require('mongoose');
 const validator = require('validator');
 
@@ -34,6 +35,18 @@ const UserSchema = new mongoose.Schema({
     }
   ]
 });
+
+// toJSON (overriding the Mongoose method)
+UserSchema.methods.toJSON = function() {
+  // Variables
+  const user = this;
+
+  // Convert the user document into a plain javascript object
+  const userObject = user.toObject();
+
+  // Pick off properties from the user object and return a new object
+  return _.pick(userObject, ['_id', 'email']);
+};
 
 // Generate JWT (instance method)
 UserSchema.methods.generateAuthToken = function() {
