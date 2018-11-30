@@ -154,7 +154,6 @@ app.post('/users', (req, res) => {
 
 // Get user
 app.get('/users/me', authenticate, (req, res) => {
-  console.log('user:', req.user);
   res.status(200).send(req.user);
 });
 
