@@ -1,7 +1,9 @@
 // Module dependencies
+const jwt = require('jsonwebtoken');
 const { ObjectID } = require('mongodb');
 
 const { Todo } = require('../../models/Todo');
+const { User } = require('../../models/User');
 
 // Todos
 const TODOS = [
@@ -17,6 +19,30 @@ const TODOS = [
   }
 ];
 
+// Users
+const userOneId = new ObjectID();
+const userTwoId = new ObjectID();
+const USERS = [
+  {
+    _id: userOneId,
+    email: 'john@mail.com',
+    password: 'userOnePassword',
+    tokens: [
+      {
+        access: 'auth',
+        token: jwt
+          .sign({ _id: userOneId, access: 'auth' }, 'somesecret')
+          .toString()
+      }
+    ]
+  },
+  {
+    _id: userTwoId,
+    email: 'rob@mail.com',
+    password: 'userTwoPassword'
+  }
+];
+
 // Populate Todos
 const populateTodos = done => {
   // Remove all documents from todos collection
@@ -28,4 +54,4 @@ const populateTodos = done => {
 };
 
 // Module exports
-module.exports = { populateTodos, TODOS };
+module.exports = { populateTodos, TODOS, USERS };
