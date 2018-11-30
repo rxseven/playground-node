@@ -6,13 +6,20 @@ const request = require('supertest');
 const { app } = require('../server');
 const { Todo } = require('../models/Todo');
 
-const { populateTodos, TODOS } = require('./seed/seed');
+const { populateTodos, populateUsers, TODOS, USERS } = require('./seed/seed');
 
 // Populate Todos
 beforeEach(function(done) {
   // Disable timeout for a hook and populate seed data
   this.timeout(0);
   populateTodos(done);
+});
+
+// Popupate Users
+beforeEach(function(done) {
+  // Disable timeout for a hook and populate seed data
+  this.timeout(0);
+  populateUsers(done);
 });
 
 // Test suite
