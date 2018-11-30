@@ -1,6 +1,8 @@
 // Module dependencies
 const { ObjectID } = require('mongodb');
 
+const { Todo } = require('../../models/Todo');
+
 // Todos
 const TODOS = [
   {
@@ -15,5 +17,15 @@ const TODOS = [
   }
 ];
 
+// Populate Todos
+const populateTodos = done => {
+  // Remove all documents from todos collection
+  Todo.deleteMany({})
+    .then(() => {
+      return Todo.insertMany(TODOS);
+    })
+    .then(() => done());
+};
+
 // Module exports
-module.exports = { TODOS };
+module.exports = { populateTodos, TODOS };
