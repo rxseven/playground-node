@@ -1,4 +1,5 @@
 // Module dependencies
+const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 const validator = require('validator');
 
@@ -33,6 +34,22 @@ const UserSchema = new mongoose.Schema({
     }
   ]
 });
+
+// Generate JWT (instance method)
+UserSchema.methods.generateAuthToken = function() {
+  // Variables
+  const user = this;
+  const access = 'auth';
+  const token = jwt
+    .sign({ _id: user._id.toHexString(), access }, 'somesecret')
+    .toString();
+
+  // Update tokens
+  user.tokens = user.tokens.concat([{ access, token }]);
+
+  // Save the document and return a Promise including the token
+  return user.save().then(() => token);
+};
 
 // Model
 const User = mongoose.model('User', UserSchema);
