@@ -8,12 +8,10 @@ const { Todo } = require('../models/Todo');
 
 const { populateTodos, TODOS } = require('./seed/seed');
 
-// Configuration
+// Populate Todos
 beforeEach(function(done) {
-  // Disable timeout for a hook
+  // Disable timeout for a hook and populate seed data
   this.timeout(0);
-
-  // Populate Todos
   populateTodos(done);
 });
 
