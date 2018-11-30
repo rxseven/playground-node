@@ -53,5 +53,19 @@ const populateTodos = done => {
     .then(() => done());
 };
 
+// Populate Users
+const populateUsers = done => {
+  // Remove all documents from users collection
+  User.deleteMany({})
+    .then(() => {
+      // Add user documents
+      const userOne = new User(USERS[0]).save();
+      const userTwo = new User(USERS[1]).save();
+
+      return Promise.all([userOne, userTwo]);
+    })
+    .then(() => done());
+};
+
 // Module exports
-module.exports = { populateTodos, TODOS, USERS };
+module.exports = { populateTodos, populateUsers, TODOS, USERS };
