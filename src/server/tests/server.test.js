@@ -6,31 +6,15 @@ const request = require('supertest');
 const { app } = require('../server');
 const { Todo } = require('../models/Todo');
 
-// Initial todos
-const TODOS = [
-  {
-    _id: new ObjectID(),
-    text: 'Buy pencils'
-  },
-  {
-    _id: new ObjectID(),
-    text: 'Pay internet bill',
-    completed: true,
-    completedAt: 1543416161337
-  }
-];
+const { populateTodos, TODOS } = require('./seed/seed');
 
 // Configuration
 beforeEach(function(done) {
   // Disable timeout for a hook
   this.timeout(0);
 
-  // Remove all documents from todos collection
-  Todo.deleteMany({})
-    .then(() => {
-      return Todo.insertMany(TODOS);
-    })
-    .then(() => done());
+  // Populate Todos
+  populateTodos(done);
 });
 
 // Test suite
