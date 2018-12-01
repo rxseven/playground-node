@@ -42,8 +42,8 @@ app.post('/todos', authenticate, (req, res) => {
 });
 
 // Get todos
-app.get('/todos', (req, res) => {
-  Todo.find().then(
+app.get('/todos', authenticate, (req, res) => {
+  Todo.find({ _creator: req.user._id }).then(
     todos => {
       res.status(200).send({ todos });
     },
