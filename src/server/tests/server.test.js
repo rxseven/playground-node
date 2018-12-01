@@ -245,6 +245,24 @@ describe('PATCH /todos/:id', function() {
       .end(done);
   });
 
+  it('should not update a todo created by other user', done => {
+    // Generate object ID from the initial todo item
+    const id = TODOS[1]._id.toHexString();
+
+    // Expected text string
+    const text = 'Merge to master and deploy to the production server';
+
+    request(app)
+      .patch(`/todos/${id}`)
+      .set('x-auth', USERS[0].tokens[0].token)
+      .send({
+        completed: true,
+        text
+      })
+      .expect(404)
+      .end(done);
+  });
+
   it('should clear completeAt property when todo is not completed', done => {
     // Generate object ID from the initial todo item
     const id = TODOS[1]._id.toHexString();
