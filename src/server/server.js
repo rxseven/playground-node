@@ -185,6 +185,18 @@ app.get('/users/me', authenticate, (req, res) => {
   res.status(200).send(req.user);
 });
 
+// Logout
+app.delete('/users/me/token', authenticate, (req, res) => {
+  req.user.removeToken(req.token).then(
+    () => {
+      res.status(200).send({ message: 'Logged out successfully' });
+    },
+    () => {
+      res.status(400).send({ message: 'Something went wrong' });
+    }
+  );
+});
+
 // Bind and listen for connections on the specified host and port
 app.listen(process.env.PORT || 5000, () => {
   console.log('Server is listening on port 5000');
