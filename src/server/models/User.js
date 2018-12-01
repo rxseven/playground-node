@@ -1,9 +1,13 @@
 // Module dependencies
 const bcrypt = require('bcryptjs');
+const config = require('config');
 const jwt = require('jsonwebtoken');
 const _ = require('lodash');
 const mongoose = require('mongoose');
 const validator = require('validator');
+
+// Constants
+const SECRET = config.get('token.secret');
 
 // Schema
 const UserSchema = new mongoose.Schema({
@@ -45,7 +49,7 @@ UserSchema.statics.findByToken = function(token) {
 
   // Verify the token
   try {
-    decoded = jwt.verify(token, 'somesecret');
+    decoded = jwt.verify(token, SECRET);
   } catch (error) {
     return Promise.reject();
   }
@@ -100,7 +104,7 @@ UserSchema.methods.generateAuthToken = function() {
   const user = this;
   const access = 'auth';
   const token = jwt
-    .sign({ _id: user._id.toHexString(), access }, 'somesecret')
+    .sign({ _id: user._id.toHexString(), access }, SECRET)
     .toString();
 
   // Update tokens
