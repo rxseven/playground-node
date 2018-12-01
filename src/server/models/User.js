@@ -40,7 +40,7 @@ const UserSchema = new mongoose.Schema({
 // Find user by token (model method)
 UserSchema.statics.findByToken = function(token) {
   // Variables
-  const user = this;
+  const User = this;
   let decoded;
 
   // Verify the token
