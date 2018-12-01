@@ -108,7 +108,7 @@ app.delete('/todos/:id', authenticate, (req, res) => {
 });
 
 // Update todo
-app.patch('/todos/:id', (req, res) => {
+app.patch('/todos/:id', authenticate, (req, res) => {
   // Variables
   const { id } = req.params;
   const body = _.pick(req.body, ['text', 'completed']);
@@ -127,7 +127,11 @@ app.patch('/todos/:id', (req, res) => {
   }
 
   // Save changes
-  Todo.findByIdAndUpdate(id, { $set: body }, { new: true })
+  Todo.findOneAndUpdate(
+    { _id: id, _creator: req.user._id },
+    { $set: body },
+    { new: true }
+  )
     .then(todo => {
       if (!todo) {
         return res.status(404).send({ message: 'Todo not found' });
