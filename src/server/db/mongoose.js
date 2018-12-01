@@ -7,7 +7,11 @@ const mongoose = require('mongoose');
 
 // Connect to MongoDB
 mongoose.Promise = global.Promise;
-mongoose.connect(config.mongoDB.URI, { useNewUrlParser: true });
+mongoose.set('useCreateIndex', true);
+mongoose.connect(
+  config.mongoDB.URI,
+  { useNewUrlParser: true }
+);
 mongoose.connection.on('error', err => {
   console.error(err);
 });
