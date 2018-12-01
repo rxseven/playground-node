@@ -54,7 +54,7 @@ app.get('/todos', authenticate, (req, res) => {
 });
 
 // Get todo
-app.get('/todos/:id', (req, res) => {
+app.get('/todos/:id', authenticate, (req, res) => {
   // Variables
   const { id } = req.params;
 
@@ -63,8 +63,11 @@ app.get('/todos/:id', (req, res) => {
     return res.status(404).send({ message: 'Invalid Todo ID' });
   }
 
-  // Get todo by ID
-  Todo.findById(id)
+  // Get todo
+  Todo.findOne({
+    _id: id,
+    _creator: req.user._id
+  })
     .then(todo => {
       if (!todo) {
         return res.status(404).send({ message: 'Todo not found' });
