@@ -21,4 +21,4 @@ const Todo = mongoose.model('Todo', {
 });
 
 // Module exports
-module.exports = { Todo }
+module.exports = { Todo };
