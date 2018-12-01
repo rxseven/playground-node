@@ -178,6 +178,7 @@ describe('DELETE /todos/:id', function() {
 
     request(app)
       .delete(`/todos/${id}`)
+      .set('x-auth', USERS[1].tokens[0].token)
       .expect(404)
       .end(done);
   });
@@ -188,6 +189,7 @@ describe('DELETE /todos/:id', function() {
 
     request(app)
       .delete(`/todos/${id}`)
+      .set('x-auth', USERS[1].tokens[0].token)
       .expect(404)
       .end(done);
   });
