@@ -58,6 +58,30 @@ UserSchema.statics.findByToken = function(token) {
   });
 };
 
+// Find user by credentials (model method)
+UserSchema.statics.findByCredentials = function(email, password) {
+  // Variables
+  const User = this;
+
+  // Find the associate email if any and return a Promise
+  return User.findOne({ email }).then(user => {
+    if (!user) {
+      return Promise.reject();
+    }
+
+    // Compare passwords
+    return new Promise((resolve, reject) => {
+      bcrypt.compare(password, user.password, (error, response) => {
+        if (response) {
+          resolve(user);
+        } else {
+          reject();
+        }
+      });
+    });
+  });
+};
+
 // toJSON (overriding the Mongoose method)
 UserSchema.methods.toJSON = function() {
   // Variables
