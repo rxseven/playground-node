@@ -153,6 +153,7 @@ describe('DELETE /todos/:id', function() {
 
     request(app)
       .delete(`/todos/${id}`)
+      .set('x-auth', USERS[1].tokens[0].token)
       .expect(200)
       .expect(res => {
         expect(res.body.todo._id).toBe(id);
