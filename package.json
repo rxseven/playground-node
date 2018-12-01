@@ -7,7 +7,11 @@
     "type": "git",
     "url": "git+https://rxseven@github.com/rxseven/playground-node.git"
   },
-  "author": "Theerawat Pongsupawat",
+  "author": {
+    "name": "Theerawat Pongsupawat",
+    "email": "rxseven.com@gmail.com",
+    "url": "http://www.rxseven.com"
+  },
   "license": "AGPL-3.0-or-later",
   "bugs": {
     "url": "https://github.com/rxseven/playground-node/issues"
