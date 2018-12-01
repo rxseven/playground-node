@@ -172,6 +172,28 @@ describe('DELETE /todos/:id', function() {
       });
   });
 
+  it('should not delete a todo created by other user', done => {
+    // Generate object ID from the initial todo item
+    const id = TODOS[0]._id.toHexString();
+
+    request(app)
+      .delete(`/todos/${id}`)
+      .set('x-auth', USERS[1].tokens[0].token)
+      .expect(404)
+      .end((error, res) => {
+        if (error) {
+          return done(error);
+        }
+
+        Todo.findById(id)
+          .then(todo => {
+            expect(todo).toBeTruthy();
+            done();
+          })
+          .catch(error => done(error));
+      });
+  });
+
   it('should return 404 if todo not found', done => {
     // Generate random object ID
     const id = new ObjectID().toHexString();
