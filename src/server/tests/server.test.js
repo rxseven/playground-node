@@ -277,6 +277,31 @@ describe('GET /users/me', function() {
 });
 
 // Test suite
+describe('DELETE /users/me/token', function() {
+  // Disable timeout for test suite
+  this.timeout(0);
+
+  it('should remove JWT on logout', done => {
+    request(app)
+      .delete('/users/me/token')
+      .set('x-auth', USERS[0].tokens[0].token)
+      .expect(200)
+      .end((err, res) => {
+        if (err) {
+          return done(err);
+        }
+
+        User.findById(USERS[0]._id)
+          .then(user => {
+            expect(user.tokens.length).toBe(0);
+            done();
+          })
+          .catch(error => done(error));
+      });
+  });
+});
+
+// Test suite
 describe('POST /users', function() {
   // Disable timeout for test suite
   this.timeout(0);
