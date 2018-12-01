@@ -110,6 +110,19 @@ UserSchema.methods.generateAuthToken = function() {
   return user.save().then(() => token);
 };
 
+// Remove JWT (instance method)
+UserSchema.methods.removeToken = function(token) {
+  // Variables
+  const user = this;
+
+  // Remove JWT from the document and return a Promise
+  return user.update({
+    $pull: {
+      tokens: { token }
+    }
+  });
+};
+
 // Do something before saving the document
 UserSchema.pre('save', function(next) {
   // Variables
