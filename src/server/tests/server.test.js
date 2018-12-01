@@ -231,6 +231,7 @@ describe('PATCH /todos/:id', function() {
 
     request(app)
       .patch(`/todos/${id}`)
+      .set('x-auth', USERS[1].tokens[0].token)
       .send({
         completed: true,
         text
@@ -253,6 +254,7 @@ describe('PATCH /todos/:id', function() {
 
     request(app)
       .patch(`/todos/${id}`)
+      .set('x-auth', USERS[1].tokens[0].token)
       .send({
         completed: false,
         text
@@ -272,6 +274,7 @@ describe('PATCH /todos/:id', function() {
 
     request(app)
       .patch(`/todos/${id}`)
+      .set('x-auth', USERS[1].tokens[0].token)
       .expect(404)
       .end(done);
   });
@@ -282,6 +285,7 @@ describe('PATCH /todos/:id', function() {
 
     request(app)
       .patch(`/todos/${id}`)
+      .set('x-auth', USERS[1].tokens[0].token)
       .expect(404)
       .end(done);
   });
