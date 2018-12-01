@@ -10,7 +10,7 @@ const authenticate = (req, res, next) => {
   User.findByToken(token)
     .then(user => {
       if (!user) {
-        res.status(404).send({ message: 'User not found' });
+        return Promise.reject();
       }
 
       // Append user and token to the request object
