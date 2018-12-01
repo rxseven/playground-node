@@ -81,7 +81,7 @@ app.get('/todos/:id', authenticate, (req, res) => {
 });
 
 // Delete todo
-app.delete('/todos/:id', (req, res) => {
+app.delete('/todos/:id', authenticate, (req, res) => {
   // Variables
   const { id } = req.params;
 
@@ -90,8 +90,11 @@ app.delete('/todos/:id', (req, res) => {
     return res.status(404).send({ message: 'Invalid Todo ID' });
   }
 
-  // Delete todo by ID
-  Todo.findByIdAndDelete(id)
+  // Delete todo
+  Todo.findOneAndDelete({
+    _id: id,
+    _creator: req.user._id
+  })
     .then(todo => {
       if (!todo) {
         return res.status(404).send({ message: 'Todo not found' });
