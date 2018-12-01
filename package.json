@@ -1,7 +1,7 @@
 {
   "name": "playground-node",
   "version": "0.0.1",
-  "description": "Node Playground",
+  "description": "RESTful API for Todo app built with Node, Express, JWT and MongoDB & Mongoose",
   "main": "index.js",
   "repository": {
     "type": "git",
