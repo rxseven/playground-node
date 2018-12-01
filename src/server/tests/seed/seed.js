@@ -41,10 +41,12 @@ const USERS = [
 const TODOS = [
   {
     _id: new ObjectID(),
+    _creator: userOneId,
     text: 'Buy pencils'
   },
   {
     _id: new ObjectID(),
+    _creator: userTwoId,
     text: 'Pay internet bill',
     completed: true,
     completedAt: 1543416161337
