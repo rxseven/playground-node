@@ -35,6 +35,7 @@ describe('POST /todos', function() {
     // Assertions
     request(app)
       .post('/todos')
+      .set('x-auth', USERS[0].tokens[0].token)
       .send({ text })
       .expect(201)
       .expect(res => {
@@ -59,6 +60,7 @@ describe('POST /todos', function() {
     // Assertions
     request(app)
       .post('/todos')
+      .set('x-auth', USERS[0].tokens[0].token)
       .send({})
       .expect(400)
       .end((err, res) => {
