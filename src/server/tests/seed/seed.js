@@ -5,20 +5,6 @@ const { ObjectID } = require('mongodb');
 const { Todo } = require('../../models/Todo');
 const { User } = require('../../models/User');
 
-// Todos
-const TODOS = [
-  {
-    _id: new ObjectID(),
-    text: 'Buy pencils'
-  },
-  {
-    _id: new ObjectID(),
-    text: 'Pay internet bill',
-    completed: true,
-    completedAt: 1543416161337
-  }
-];
-
 // Users
 const userOneId = new ObjectID();
 const userTwoId = new ObjectID();
@@ -40,6 +26,20 @@ const USERS = [
     _id: userTwoId,
     email: 'rob@mail.com',
     password: 'userTwoPassword'
+  }
+];
+
+// Todos
+const TODOS = [
+  {
+    _id: new ObjectID(),
+    text: 'Buy pencils'
+  },
+  {
+    _id: new ObjectID(),
+    text: 'Pay internet bill',
+    completed: true,
+    completedAt: 1543416161337
   }
 ];
 
