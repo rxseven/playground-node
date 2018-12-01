@@ -3,9 +3,9 @@ const expect = require('expect');
 const { ObjectID } = require('mongodb');
 const request = require('supertest');
 
-const { app } = require('../server');
 const { Todo } = require('../models/Todo');
 const { User } = require('../models/User');
+const { app } = require('../server');
 
 const { populateTodos, populateUsers, TODOS, USERS } = require('./seed/seed');
 
