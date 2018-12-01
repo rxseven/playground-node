@@ -332,3 +332,66 @@ describe('POST /users', function() {
       .end(done);
   });
 });
+
+// Test suite
+describe('POST /users/login', function() {
+  // Disable timeout for test suite
+  this.timeout(0);
+
+  it('should login user and return JWT', done => {
+    request(app)
+      .post('/users/login')
+      .send({
+        email: USERS[1].email,
+        password: USERS[1].password
+      })
+      .expect(200)
+      .expect(res => {
+        expect(res.body._id).toBe(USERS[1]._id.toHexString());
+        expect(res.body.email).toBe(USERS[1].email);
+        expect(res.header['x-auth']).toBeTruthy();
+      })
+      .end((err, res) => {
+        if (err) {
+          return done(err);
+        }
+
+        User.findById(USERS[1]._id)
+          .then(user => {
+            expect(user.tokens[0]).toMatchObject({
+              access: 'auth',
+              token: res.headers['x-auth']
+            });
+            done();
+          })
+          .catch(error => done(error));
+      });
+  });
+
+  it('should reject invalid login', done => {
+    request(app)
+      .post('/users/login')
+      .send({
+        email: USERS[1].email,
+        password: 'incorrectPassword'
+      })
+      .expect(401)
+      .expect(res => {
+        expect(res.body._id).not.toBe(USERS[1]._id.toHexString());
+        expect(res.body.email).not.toBe(USERS[1].email);
+        expect(res.header['x-auth']).toBeFalsy();
+      })
+      .end((err, res) => {
+        if (err) {
+          return done(err);
+        }
+
+        User.findById(USERS[1]._id)
+          .then(user => {
+            expect(user.tokens.length).toBe(0);
+            done();
+          })
+          .catch(error => done(error));
+      });
+  });
+});
