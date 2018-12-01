@@ -111,6 +111,14 @@ describe('GET /todos/:id', function() {
       .end(done);
   });
 
+  it('should not return todo document created by other user', done => {
+    request(app)
+      .get(`/todos/${TODOS[1]._id.toHexString()}`)
+      .set('x-auth', USERS[0].tokens[0].token)
+      .expect(404)
+      .end(done);
+  });
+
   it('should return 404 if todo not found', done => {
     // Generate random object ID
     const id = new ObjectID().toHexString();
