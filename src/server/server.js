@@ -159,6 +159,27 @@ app.post('/users', (req, res) => {
     });
 });
 
+// Login
+app.post('/users/login', (req, res) => {
+  // Pick off properties from the request body and return a new object
+  const body = _.pick(req.body, ['email', 'password']);
+
+  // Find a user by credentials
+  User.findByCredentials(body.email, body.password)
+    .then(user => {
+      // Generate JWT for the user instance
+      return user.generateAuthToken().then(token => {
+        res
+          .status(200)
+          .header({ 'x-auth': token })
+          .send(user);
+      });
+    })
+    .catch(error => {
+      res.status(401).send({ message: 'Unauthorized' });
+    });
+});
+
 // Get user
 app.get('/users/me', authenticate, (req, res) => {
   res.status(200).send(req.user);
