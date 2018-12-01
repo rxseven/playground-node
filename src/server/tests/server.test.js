@@ -300,11 +300,13 @@ describe('POST /users', function() {
           return done(error);
         }
 
-        User.findOne({ email }).then(user => {
-          expect(user).toBeTruthy();
-          expect(user.password).not.toBe(password);
-          done();
-        });
+        User.findOne({ email })
+          .then(user => {
+            expect(user).toBeTruthy();
+            expect(user.password).not.toBe(password);
+            done();
+          })
+          .catch(error => done(error));
       });
   });
 
