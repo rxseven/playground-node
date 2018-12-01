@@ -23,9 +23,10 @@ if (config.util.getEnv('NODE_ENV') !== 'test') {
 }
 
 // Add todo
-app.post('/todos', (req, res) => {
+app.post('/todos', authenticate, (req, res) => {
   // Create new document
   const todo = new Todo({
+    _creator: req.user.id,
     text: req.body.text
   });
 
