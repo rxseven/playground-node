@@ -103,6 +103,7 @@ describe('GET /todos/:id', function() {
   it('should return todo document', done => {
     request(app)
       .get(`/todos/${TODOS[0]._id.toHexString()}`)
+      .set('x-auth', USERS[0].tokens[0].token)
       .expect(200)
       .expect(res => {
         expect(res.body.todo.text).toBe(TODOS[0].text);
@@ -116,6 +117,7 @@ describe('GET /todos/:id', function() {
 
     request(app)
       .get(`/todos/${id}`)
+      .set('x-auth', USERS[0].tokens[0].token)
       .expect(404)
       .end(done);
   });
@@ -126,6 +128,7 @@ describe('GET /todos/:id', function() {
 
     request(app)
       .get(`/todos/${id}`)
+      .set('x-auth', USERS[0].tokens[0].token)
       .expect(404)
       .end(done);
   });
