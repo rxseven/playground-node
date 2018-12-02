@@ -1,5 +1,6 @@
 // Module dependencies
 const config = require('config');
+const cors = require('cors');
 const bodyParser = require('body-parser');
 const express = require('express');
 const _ = require('lodash');
@@ -16,6 +17,9 @@ const app = express();
 
 // Body parsing
 app.use(bodyParser.json());
+
+// CORS
+app.use(cors());
 
 // Logger
 if (config.util.getEnv('NODE_ENV') !== 'test') {
