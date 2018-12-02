@@ -6,11 +6,39 @@ REST API playground for Todo app built with Node, Express, JWT and MongoDB.
 
 ## Table of Contents
 
+### Specifications
+
+- [Features](#features)
+
 ### Appendix
 
 - [Changelog](#changelog)
 - [Acknowledgements](#acknowledgements)
 - [Licenses](#licenses)
+
+## Features
+
+### Users & Authentication
+
+- Sign-up (register)
+- Sign-in
+- Sign-out
+- Get user profile
+- JSON Web Token (JWT) and route protection
+
+### Todos
+
+- Add todo
+- Edit todo
+- Delete todo
+- Get todo
+- Get list of todos
+
+### Security
+
+- Cross-Origin Resource Sharing (CORS)
+
+[Back to top](#table-of-contents)
 
 ## Changelog
 
