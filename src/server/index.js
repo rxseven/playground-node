@@ -1,7 +1,7 @@
 // Module dependencies
 const config = require('config');
-const express = require('express');
 const bodyParser = require('body-parser');
+const express = require('express');
 const _ = require('lodash');
 const { ObjectID } = require('mongodb');
 const morgan = require('morgan');

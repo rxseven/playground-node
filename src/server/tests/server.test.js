@@ -3,9 +3,9 @@ const expect = require('expect');
 const { ObjectID } = require('mongodb');
 const request = require('supertest');
 
-const { app } = require('../server');
 const { Todo } = require('../models/Todo');
 const { User } = require('../models/User');
+const { app } = require('../server');
 
 const { populateTodos, populateUsers, TODOS, USERS } = require('./seed/seed');
 
@@ -84,6 +84,7 @@ describe('GET /todos', function() {
   this.timeout(0);
 
   it('should get all todos', done => {
+    // Assertions
     request(app)
       .get('/todos')
       .set('x-auth', USERS[0].tokens[0].token)
@@ -101,6 +102,7 @@ describe('GET /todos/:id', function() {
   this.timeout(0);
 
   it('should return todo document', done => {
+    // Assertions
     request(app)
       .get(`/todos/${TODOS[0]._id.toHexString()}`)
       .set('x-auth', USERS[0].tokens[0].token)
@@ -112,6 +114,7 @@ describe('GET /todos/:id', function() {
   });
 
   it('should not return todo document created by other user', done => {
+    // Assertions
     request(app)
       .get(`/todos/${TODOS[1]._id.toHexString()}`)
       .set('x-auth', USERS[0].tokens[0].token)
@@ -123,6 +126,7 @@ describe('GET /todos/:id', function() {
     // Generate random object ID
     const id = new ObjectID().toHexString();
 
+    // Assertions
     request(app)
       .get(`/todos/${id}`)
       .set('x-auth', USERS[0].tokens[0].token)
@@ -134,6 +138,7 @@ describe('GET /todos/:id', function() {
     // Generate invalid object ID
     const id = 'invalidId';
 
+    // Assertions
     request(app)
       .get(`/todos/${id}`)
       .set('x-auth', USERS[0].tokens[0].token)
@@ -151,6 +156,7 @@ describe('DELETE /todos/:id', function() {
     // Generate object ID from the initial todo item
     const id = TODOS[1]._id.toHexString();
 
+    // Assertions
     request(app)
       .delete(`/todos/${id}`)
       .set('x-auth', USERS[1].tokens[0].token)
@@ -176,6 +182,7 @@ describe('DELETE /todos/:id', function() {
     // Generate object ID from the initial todo item
     const id = TODOS[0]._id.toHexString();
 
+    // Assertions
     request(app)
       .delete(`/todos/${id}`)
       .set('x-auth', USERS[1].tokens[0].token)
@@ -198,6 +205,7 @@ describe('DELETE /todos/:id', function() {
     // Generate random object ID
     const id = new ObjectID().toHexString();
 
+    // Assertions
     request(app)
       .delete(`/todos/${id}`)
       .set('x-auth', USERS[1].tokens[0].token)
@@ -209,6 +217,7 @@ describe('DELETE /todos/:id', function() {
     // Generate invalid object ID
     const id = 'invalidId';
 
+    // Assertions
     request(app)
       .delete(`/todos/${id}`)
       .set('x-auth', USERS[1].tokens[0].token)
@@ -229,6 +238,7 @@ describe('PATCH /todos/:id', function() {
     // Expected text string
     const text = 'Merge to master and deploy to the production server';
 
+    // Assertions
     request(app)
       .patch(`/todos/${id}`)
       .set('x-auth', USERS[1].tokens[0].token)
@@ -252,6 +262,7 @@ describe('PATCH /todos/:id', function() {
     // Expected text string
     const text = 'Merge to master and deploy to the production server';
 
+    // Assertions
     request(app)
       .patch(`/todos/${id}`)
       .set('x-auth', USERS[0].tokens[0].token)
@@ -270,6 +281,7 @@ describe('PATCH /todos/:id', function() {
     // Expected text string
     const text = 'Fix typo';
 
+    // Assertions
     request(app)
       .patch(`/todos/${id}`)
       .set('x-auth', USERS[1].tokens[0].token)
@@ -290,6 +302,7 @@ describe('PATCH /todos/:id', function() {
     // Generate random object ID
     const id = new ObjectID().toHexString();
 
+    // Assertions
     request(app)
       .patch(`/todos/${id}`)
       .set('x-auth', USERS[1].tokens[0].token)
@@ -301,6 +314,7 @@ describe('PATCH /todos/:id', function() {
     // Generate invalid object ID
     const id = 'invalidId';
 
+    // Assertions
     request(app)
       .patch(`/todos/${id}`)
       .set('x-auth', USERS[1].tokens[0].token)
@@ -315,6 +329,7 @@ describe('GET /users/me', function() {
   this.timeout(0);
 
   it('should return user if authenticated', done => {
+    // Assertions
     request(app)
       .get('/users/me')
       .set('x-auth', USERS[0].tokens[0].token)
@@ -327,6 +342,7 @@ describe('GET /users/me', function() {
   });
 
   it('should return 401 if not authenticated', done => {
+    // Assertions
     request(app)
       .get('/users/me')
       .expect(401)
@@ -343,6 +359,7 @@ describe('DELETE /users/me/token', function() {
   this.timeout(0);
 
   it('should remove JWT on logout', done => {
+    // Assertions
     request(app)
       .delete('/users/me/token')
       .set('x-auth', USERS[0].tokens[0].token)
@@ -372,6 +389,7 @@ describe('POST /users', function() {
     const email = 'montri@mail.com';
     const password = 'somepassword';
 
+    // Assertions
     request(app)
       .post('/users')
       .send({ email, password })
@@ -397,6 +415,7 @@ describe('POST /users', function() {
   });
 
   it('should return validation errors if request invalid', done => {
+    // Assertions
     request(app)
       .post('/users')
       .send({
@@ -408,6 +427,7 @@ describe('POST /users', function() {
   });
 
   it('should not create user if email in use', done => {
+    // Assertions
     request(app)
       .post('/users')
       .send({
@@ -425,6 +445,7 @@ describe('POST /users/login', function() {
   this.timeout(0);
 
   it('should login user and return JWT', done => {
+    // Assertions
     request(app)
       .post('/users/login')
       .send({
@@ -455,6 +476,7 @@ describe('POST /users/login', function() {
   });
 
   it('should reject invalid login', done => {
+    // Assertions
     request(app)
       .post('/users/login')
       .send({

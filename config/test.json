@@ -1,0 +1,8 @@
+{
+  "mongoDB": {
+    "URI": ""
+  },
+  "token": {
+    "secret": ""
+  }
+}
