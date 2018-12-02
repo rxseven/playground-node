@@ -6,6 +6,8 @@ REST API playground for Todo app built with Node, Express, JWT and MongoDB.
 
 ## Table of Contents
 
+### Appendix
+
 - [Changelog](#changelog)
 - [Acknowledgements](#acknowledgements)
 - [Licenses](#licenses)
