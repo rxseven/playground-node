@@ -1,6 +1,6 @@
 # REST API Playground for Todo App
 
-RESTful API for Todo app built with Node, Express, JWT and MongoDB & Mongoose.
+REST API playground for Todo app built with Node, Express, JWT and MongoDB.
 
 ## Table of Contents
 
