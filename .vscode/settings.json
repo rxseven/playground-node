@@ -12,5 +12,10 @@
   // Prettier
   // Disable the default JavaScript formatter (editor’s built-in) and allows
   // Prettier to handle code formatting.
-  "javascript.format.enable": false
+  "javascript.format.enable": false,
+
+  // ESLint
+  // Use ESLint for JavaScript linting rather than built-in JavaScript and
+  // TypeScript validation.
+  "javascript.validate.enable": false
 }
