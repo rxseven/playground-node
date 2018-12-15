@@ -17,5 +17,10 @@
   // ESLint
   // Use ESLint for JavaScript linting rather than built-in JavaScript and
   // TypeScript validation.
-  "javascript.validate.enable": false
+  "javascript.validate.enable": false,
+
+  // Prettier
+  // Use prettier-eslint instead of prettier. Other settings will only be
+  // fallbacks in case they could not be inferred from ESLint rules.
+  "prettier.eslintIntegration": true
 }
