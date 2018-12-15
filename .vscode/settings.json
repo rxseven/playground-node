@@ -6,6 +6,7 @@
   // File associations to languages
   "files.associations": {
     ".eslintrc": "json",
+    ".huskyrc": "json",
     ".prettierrc": "json"
   },
 
