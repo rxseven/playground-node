@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/rxseven/playground-node#readme",
   "scripts": {
+    "format": "prettier-eslint --write \"**/*.{js,json}\"",
     "lint": "eslint \"**/*.js\"",
     "lint:fix": "eslint --fix \"**/*.js\"",
     "start": "node src/server/index.js",
