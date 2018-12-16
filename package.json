@@ -24,7 +24,7 @@
     "start": "node src/server/index.js",
     "start:watch": "nodemon src/server/index.js",
     "test": "cross-env NODE_ENV=test mocha src/server/**/*.test.js",
-    "test:watch": "nodemon --exec 'npm test'"
+    "test:watch": "yarn test --watch"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
