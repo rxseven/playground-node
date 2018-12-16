@@ -191,15 +191,13 @@ app.get('/users/me', authenticate, (req, res) => {
 });
 
 // Logout
-app.delete('/users/me/token', authenticate, (req, res) => {
-  req.user.removeToken(req.token).then(
-    () => {
-      res.status(200).send({ message: 'Logged out successfully' });
-    },
-    () => {
-      res.status(400).send({ message: 'Something went wrong' });
-    }
-  );
+app.delete('/users/me/token', authenticate, async (req, res) => {
+  try {
+    await req.user.removeToken(req.token);
+    res.status(200).send({ message: 'Logged out successfully' });
+  } catch (error) {
+    res.status(400).send({ message: 'Something went wrong' });
+  }
 });
 
 // Bind and listen for connections on the specified host and port
