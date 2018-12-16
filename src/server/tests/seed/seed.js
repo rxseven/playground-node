@@ -54,17 +54,15 @@ const TODOS = [
 ];
 
 // Populate Todos
-const populateTodos = done => {
+const populateTodos = (done) => {
   // Remove all documents from todos collection
   Todo.deleteMany({})
-    .then(() => {
-      return Todo.insertMany(TODOS);
-    })
+    .then(() => Todo.insertMany(TODOS))
     .then(() => done());
 };
 
 // Populate Users
-const populateUsers = done => {
+const populateUsers = (done) => {
   // Remove all documents from users collection
   User.deleteMany({})
     .then(() => {
@@ -78,4 +76,6 @@ const populateUsers = done => {
 };
 
 // Module exports
-module.exports = { populateTodos, populateUsers, TODOS, USERS };
+module.exports = {
+  populateTodos, populateUsers, TODOS, USERS
+};

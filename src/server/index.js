@@ -36,10 +36,10 @@ app.post('/todos', authenticate, (req, res) => {
 
   // Save the document
   todo.save().then(
-    document => {
+    (document) => {
       res.status(201).send(document);
     },
-    error => {
+    (error) => {
       res.status(400).send(error);
     }
   );
@@ -48,10 +48,10 @@ app.post('/todos', authenticate, (req, res) => {
 // Get todos
 app.get('/todos', authenticate, (req, res) => {
   Todo.find({ _creator: req.user._id }).then(
-    todos => {
+    (todos) => {
       res.status(200).send({ todos });
     },
-    error => {
+    (error) => {
       res.status(400).send(error);
     }
   );
@@ -72,14 +72,14 @@ app.get('/todos/:id', authenticate, (req, res) => {
     _id: id,
     _creator: req.user._id
   })
-    .then(todo => {
+    .then((todo) => {
       if (!todo) {
         return res.status(404).send({ message: 'Todo not found' });
       }
 
       res.status(200).send({ todo });
     })
-    .catch(error => {
+    .catch((error) => {
       res.status(400).send({ message: 'Something went wrong' });
     });
 });
@@ -99,14 +99,14 @@ app.delete('/todos/:id', authenticate, (req, res) => {
     _id: id,
     _creator: req.user._id
   })
-    .then(todo => {
+    .then((todo) => {
       if (!todo) {
         return res.status(404).send({ message: 'Todo not found' });
       }
 
       res.status(200).send({ todo });
     })
-    .catch(error => {
+    .catch((error) => {
       res.status(400).send({ message: 'Something went wrong' });
     });
 });
@@ -131,19 +131,15 @@ app.patch('/todos/:id', authenticate, (req, res) => {
   }
 
   // Save changes
-  Todo.findOneAndUpdate(
-    { _id: id, _creator: req.user._id },
-    { $set: body },
-    { new: true }
-  )
-    .then(todo => {
+  Todo.findOneAndUpdate({ _id: id, _creator: req.user._id }, { $set: body }, { new: true })
+    .then((todo) => {
       if (!todo) {
         return res.status(404).send({ message: 'Todo not found' });
       }
 
       res.send({ todo });
     })
-    .catch(error => {
+    .catch((error) => {
       res.status(400).send({ message: 'Something went wrong' });
     });
 });
@@ -159,17 +155,14 @@ app.post('/users', (req, res) => {
   // Create a document
   user
     .save()
-    .then(() => {
-      // Generate JWT for the user instance
-      return user.generateAuthToken();
-    })
-    .then(token => {
+    .then(() => user.generateAuthToken())
+    .then((token) => {
       res
         .status(201)
         .header({ 'x-auth': token })
         .send(user);
     })
-    .catch(error => {
+    .catch((error) => {
       res.status(400).send(error);
     });
 });
@@ -181,16 +174,13 @@ app.post('/users/login', (req, res) => {
 
   // Find a user by credentials
   User.findByCredentials(body.email, body.password)
-    .then(user => {
-      // Generate JWT for the user instance
-      return user.generateAuthToken().then(token => {
-        res
-          .status(200)
-          .header({ 'x-auth': token })
-          .send(user);
-      });
-    })
-    .catch(error => {
+    .then(user => user.generateAuthToken().then((token) => {
+      res
+        .status(200)
+        .header({ 'x-auth': token })
+        .send(user);
+    }))
+    .catch((error) => {
       res.status(401).send({ message: 'Unauthorized' });
     });
 });

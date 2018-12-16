@@ -7,28 +7,30 @@ const { Todo } = require('../models/Todo');
 const { User } = require('../models/User');
 const { app } = require('../index');
 
-const { populateTodos, populateUsers, TODOS, USERS } = require('./seed/seed');
+const {
+  populateTodos, populateUsers, TODOS, USERS
+} = require('./seed/seed');
 
 // Populate Todos
-beforeEach(function(done) {
+beforeEach(function (done) {
   // Disable timeout for a hook and populate seed data
   this.timeout(0);
   populateTodos(done);
 });
 
 // Popupate Users
-beforeEach(function(done) {
+beforeEach(function (done) {
   // Disable timeout for a hook and populate seed data
   this.timeout(0);
   populateUsers(done);
 });
 
 // Test suite
-describe('POST /todos', function() {
+describe('POST /todos', function () {
   // Disable timeout for test suite
   this.timeout(0);
 
-  it('should create a new todo', done => {
+  it('should create a new todo', (done) => {
     // Variables
     const text = 'Test todo text';
 
@@ -38,7 +40,7 @@ describe('POST /todos', function() {
       .set('x-auth', USERS[0].tokens[0].token)
       .send({ text })
       .expect(201)
-      .expect(res => {
+      .expect((res) => {
         expect(res.body.text).toBe(text);
       })
       .end((err, res) => {
@@ -47,7 +49,7 @@ describe('POST /todos', function() {
         }
 
         Todo.find({ text })
-          .then(todos => {
+          .then((todos) => {
             expect(todos.length).toBe(1);
             expect(todos[0].text).toBe(text);
             done();
@@ -56,7 +58,7 @@ describe('POST /todos', function() {
       });
   });
 
-  it('should not create todo with invalid body data', done => {
+  it('should not create todo with invalid body data', (done) => {
     // Assertions
     request(app)
       .post('/todos')
@@ -69,7 +71,7 @@ describe('POST /todos', function() {
         }
 
         Todo.find()
-          .then(todos => {
+          .then((todos) => {
             expect(todos.length).toBe(2);
             done();
           })
@@ -79,17 +81,17 @@ describe('POST /todos', function() {
 });
 
 // Test suite
-describe('GET /todos', function() {
+describe('GET /todos', function () {
   // Disable timeout for test suite
   this.timeout(0);
 
-  it('should get all todos', done => {
+  it('should get all todos', (done) => {
     // Assertions
     request(app)
       .get('/todos')
       .set('x-auth', USERS[0].tokens[0].token)
       .expect(200)
-      .expect(res => {
+      .expect((res) => {
         expect(res.body.todos.length).toBe(1);
       })
       .end(done);
@@ -97,23 +99,23 @@ describe('GET /todos', function() {
 });
 
 // Test suite
-describe('GET /todos/:id', function() {
+describe('GET /todos/:id', function () {
   // Disable timeout for test suite
   this.timeout(0);
 
-  it('should return todo document', done => {
+  it('should return todo document', (done) => {
     // Assertions
     request(app)
       .get(`/todos/${TODOS[0]._id.toHexString()}`)
       .set('x-auth', USERS[0].tokens[0].token)
       .expect(200)
-      .expect(res => {
+      .expect((res) => {
         expect(res.body.todo.text).toBe(TODOS[0].text);
       })
       .end(done);
   });
 
-  it('should not return todo document created by other user', done => {
+  it('should not return todo document created by other user', (done) => {
     // Assertions
     request(app)
       .get(`/todos/${TODOS[1]._id.toHexString()}`)
@@ -122,7 +124,7 @@ describe('GET /todos/:id', function() {
       .end(done);
   });
 
-  it('should return 404 if todo not found', done => {
+  it('should return 404 if todo not found', (done) => {
     // Generate random object ID
     const id = new ObjectID().toHexString();
 
@@ -134,7 +136,7 @@ describe('GET /todos/:id', function() {
       .end(done);
   });
 
-  it('should return 404 for non-object IDs', done => {
+  it('should return 404 for non-object IDs', (done) => {
     // Generate invalid object ID
     const id = 'invalidId';
 
@@ -148,11 +150,11 @@ describe('GET /todos/:id', function() {
 });
 
 // Test suite
-describe('DELETE /todos/:id', function() {
+describe('DELETE /todos/:id', function () {
   // Disable timeout for test suite
   this.timeout(0);
 
-  it('should delete a todo', done => {
+  it('should delete a todo', (done) => {
     // Generate object ID from the initial todo item
     const id = TODOS[1]._id.toHexString();
 
@@ -161,7 +163,7 @@ describe('DELETE /todos/:id', function() {
       .delete(`/todos/${id}`)
       .set('x-auth', USERS[1].tokens[0].token)
       .expect(200)
-      .expect(res => {
+      .expect((res) => {
         expect(res.body.todo._id).toBe(id);
       })
       .end((error, res) => {
@@ -170,7 +172,7 @@ describe('DELETE /todos/:id', function() {
         }
 
         Todo.findById(id)
-          .then(todo => {
+          .then((todo) => {
             expect(todo).toBeFalsy();
             done();
           })
@@ -178,7 +180,7 @@ describe('DELETE /todos/:id', function() {
       });
   });
 
-  it('should not delete a todo created by other user', done => {
+  it('should not delete a todo created by other user', (done) => {
     // Generate object ID from the initial todo item
     const id = TODOS[0]._id.toHexString();
 
@@ -193,7 +195,7 @@ describe('DELETE /todos/:id', function() {
         }
 
         Todo.findById(id)
-          .then(todo => {
+          .then((todo) => {
             expect(todo).toBeTruthy();
             done();
           })
@@ -201,7 +203,7 @@ describe('DELETE /todos/:id', function() {
       });
   });
 
-  it('should return 404 if todo not found', done => {
+  it('should return 404 if todo not found', (done) => {
     // Generate random object ID
     const id = new ObjectID().toHexString();
 
@@ -213,7 +215,7 @@ describe('DELETE /todos/:id', function() {
       .end(done);
   });
 
-  it('should return 404 for non-object IDs', done => {
+  it('should return 404 for non-object IDs', (done) => {
     // Generate invalid object ID
     const id = 'invalidId';
 
@@ -227,11 +229,11 @@ describe('DELETE /todos/:id', function() {
 });
 
 // Test suite
-describe('PATCH /todos/:id', function() {
+describe('PATCH /todos/:id', function () {
   // Disable timeout for test suite
   this.timeout(0);
 
-  it('should update a todo', done => {
+  it('should update a todo', (done) => {
     // Generate object ID from the initial todo item
     const id = TODOS[1]._id.toHexString();
 
@@ -247,7 +249,7 @@ describe('PATCH /todos/:id', function() {
         text
       })
       .expect(200)
-      .expect(res => {
+      .expect((res) => {
         expect(res.body.todo.text).toBe(text);
         expect(res.body.todo.completed).toBe(true);
         expect(typeof res.body.todo.completedAt).toBe('number');
@@ -255,7 +257,7 @@ describe('PATCH /todos/:id', function() {
       .end(done);
   });
 
-  it('should not update a todo created by other user', done => {
+  it('should not update a todo created by other user', (done) => {
     // Generate object ID from the initial todo item
     const id = TODOS[1]._id.toHexString();
 
@@ -274,7 +276,7 @@ describe('PATCH /todos/:id', function() {
       .end(done);
   });
 
-  it('should clear completeAt property when todo is not completed', done => {
+  it('should clear completeAt property when todo is not completed', (done) => {
     // Generate object ID from the initial todo item
     const id = TODOS[1]._id.toHexString();
 
@@ -290,7 +292,7 @@ describe('PATCH /todos/:id', function() {
         text
       })
       .expect(200)
-      .expect(res => {
+      .expect((res) => {
         expect(res.body.todo.text).toBe(text);
         expect(res.body.todo.completed).toBe(false);
         expect(res.body.todo.completedAt).toBeFalsy();
@@ -298,7 +300,7 @@ describe('PATCH /todos/:id', function() {
       .end(done);
   });
 
-  it('should return 404 if todo not found', done => {
+  it('should return 404 if todo not found', (done) => {
     // Generate random object ID
     const id = new ObjectID().toHexString();
 
@@ -310,7 +312,7 @@ describe('PATCH /todos/:id', function() {
       .end(done);
   });
 
-  it('should return 404 for non-object IDs', done => {
+  it('should return 404 for non-object IDs', (done) => {
     // Generate invalid object ID
     const id = 'invalidId';
 
@@ -324,29 +326,29 @@ describe('PATCH /todos/:id', function() {
 });
 
 // Test suite
-describe('GET /users/me', function() {
+describe('GET /users/me', function () {
   // Disable timeout for test suite
   this.timeout(0);
 
-  it('should return user if authenticated', done => {
+  it('should return user if authenticated', (done) => {
     // Assertions
     request(app)
       .get('/users/me')
       .set('x-auth', USERS[0].tokens[0].token)
       .expect(200)
-      .expect(res => {
+      .expect((res) => {
         expect(res.body._id).toBe(USERS[0]._id.toHexString());
         expect(res.body.email).toBe(USERS[0].email);
       })
       .end(done);
   });
 
-  it('should return 401 if not authenticated', done => {
+  it('should return 401 if not authenticated', (done) => {
     // Assertions
     request(app)
       .get('/users/me')
       .expect(401)
-      .expect(res => {
+      .expect((res) => {
         expect(res.body).toEqual({ message: 'Unauthorized' });
       })
       .end(done);
@@ -354,11 +356,11 @@ describe('GET /users/me', function() {
 });
 
 // Test suite
-describe('DELETE /users/me/token', function() {
+describe('DELETE /users/me/token', function () {
   // Disable timeout for test suite
   this.timeout(0);
 
-  it('should remove JWT on logout', done => {
+  it('should remove JWT on logout', (done) => {
     // Assertions
     request(app)
       .delete('/users/me/token')
@@ -370,7 +372,7 @@ describe('DELETE /users/me/token', function() {
         }
 
         User.findById(USERS[0]._id)
-          .then(user => {
+          .then((user) => {
             expect(user.tokens.length).toBe(0);
             done();
           })
@@ -380,11 +382,11 @@ describe('DELETE /users/me/token', function() {
 });
 
 // Test suite
-describe('POST /users', function() {
+describe('POST /users', function () {
   // Disable timeout for test suite
   this.timeout(0);
 
-  it('should create a user', done => {
+  it('should create a user', (done) => {
     // Variables
     const email = 'montri@mail.com';
     const password = 'somepassword';
@@ -394,18 +396,18 @@ describe('POST /users', function() {
       .post('/users')
       .send({ email, password })
       .expect(201)
-      .expect(res => {
+      .expect((res) => {
         expect(res.headers['x-auth']).toBeTruthy();
         expect(res.body._id).toBeTruthy();
         expect(res.body.email).toBe(email);
       })
-      .end(error => {
+      .end((error) => {
         if (error) {
           return done(error);
         }
 
         User.findOne({ email })
-          .then(user => {
+          .then((user) => {
             expect(user).toBeTruthy();
             expect(user.password).not.toBe(password);
             done();
@@ -414,7 +416,7 @@ describe('POST /users', function() {
       });
   });
 
-  it('should return validation errors if request invalid', done => {
+  it('should return validation errors if request invalid', (done) => {
     // Assertions
     request(app)
       .post('/users')
@@ -426,7 +428,7 @@ describe('POST /users', function() {
       .end(done);
   });
 
-  it('should not create user if email in use', done => {
+  it('should not create user if email in use', (done) => {
     // Assertions
     request(app)
       .post('/users')
@@ -440,11 +442,11 @@ describe('POST /users', function() {
 });
 
 // Test suite
-describe('POST /users/login', function() {
+describe('POST /users/login', function () {
   // Disable timeout for test suite
   this.timeout(0);
 
-  it('should login user and return JWT', done => {
+  it('should login user and return JWT', (done) => {
     // Assertions
     request(app)
       .post('/users/login')
@@ -453,7 +455,7 @@ describe('POST /users/login', function() {
         password: USERS[1].password
       })
       .expect(200)
-      .expect(res => {
+      .expect((res) => {
         expect(res.body._id).toBe(USERS[1]._id.toHexString());
         expect(res.body.email).toBe(USERS[1].email);
         expect(res.header['x-auth']).toBeTruthy();
@@ -464,7 +466,7 @@ describe('POST /users/login', function() {
         }
 
         User.findById(USERS[1]._id)
-          .then(user => {
+          .then((user) => {
             expect(user.tokens[1]).toMatchObject({
               access: 'auth',
               token: res.headers['x-auth']
@@ -475,7 +477,7 @@ describe('POST /users/login', function() {
       });
   });
 
-  it('should reject invalid login', done => {
+  it('should reject invalid login', (done) => {
     // Assertions
     request(app)
       .post('/users/login')
@@ -484,7 +486,7 @@ describe('POST /users/login', function() {
         password: 'incorrectPassword'
       })
       .expect(401)
-      .expect(res => {
+      .expect((res) => {
         expect(res.body._id).not.toBe(USERS[1]._id.toHexString());
         expect(res.body.email).not.toBe(USERS[1].email);
         expect(res.header['x-auth']).toBeFalsy();
@@ -495,7 +497,7 @@ describe('POST /users/login', function() {
         }
 
         User.findById(USERS[1]._id)
-          .then(user => {
+          .then((user) => {
             expect(user.tokens.length).toBe(1);
             done();
           })

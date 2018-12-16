@@ -8,7 +8,7 @@ const authenticate = (req, res, next) => {
 
   // Find a user by the given token
   User.findByToken(token)
-    .then(user => {
+    .then((user) => {
       if (!user) {
         return Promise.reject();
       }
@@ -20,7 +20,7 @@ const authenticate = (req, res, next) => {
       // Call the next middleware
       next();
     })
-    .catch(error => {
+    .catch((error) => {
       res.status(401).send({ message: 'Unauthorized' });
     });
 };

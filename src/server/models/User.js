@@ -42,7 +42,7 @@ const UserSchema = new mongoose.Schema({
 });
 
 // Find user by token (model method)
-UserSchema.statics.findByToken = function(token) {
+UserSchema.statics.findByToken = function (token) {
   // Variables
   const User = this;
   let decoded;
@@ -63,12 +63,12 @@ UserSchema.statics.findByToken = function(token) {
 };
 
 // Find user by credentials (model method)
-UserSchema.statics.findByCredentials = function(email, password) {
+UserSchema.statics.findByCredentials = function (email, password) {
   // Variables
   const User = this;
 
   // Find the associate email if any and return a Promise
-  return User.findOne({ email }).then(user => {
+  return User.findOne({ email }).then((user) => {
     if (!user) {
       return Promise.reject();
     }
@@ -87,7 +87,7 @@ UserSchema.statics.findByCredentials = function(email, password) {
 };
 
 // toJSON (overriding the Mongoose method)
-UserSchema.methods.toJSON = function() {
+UserSchema.methods.toJSON = function () {
   // Variables
   const user = this;
 
@@ -99,13 +99,11 @@ UserSchema.methods.toJSON = function() {
 };
 
 // Generate JWT (instance method)
-UserSchema.methods.generateAuthToken = function() {
+UserSchema.methods.generateAuthToken = function () {
   // Variables
   const user = this;
   const access = 'auth';
-  const token = jwt
-    .sign({ _id: user._id.toHexString(), access }, SECRET)
-    .toString();
+  const token = jwt.sign({ _id: user._id.toHexString(), access }, SECRET).toString();
 
   // Update tokens
   user.tokens = user.tokens.concat([{ access, token }]);
@@ -115,7 +113,7 @@ UserSchema.methods.generateAuthToken = function() {
 };
 
 // Remove JWT (instance method)
-UserSchema.methods.removeToken = function(token) {
+UserSchema.methods.removeToken = function (token) {
   // Variables
   const user = this;
 
@@ -128,7 +126,7 @@ UserSchema.methods.removeToken = function(token) {
 };
 
 // Do something before saving the document
-UserSchema.pre('save', function(next) {
+UserSchema.pre('save', function (next) {
   // Variables
   const user = this;
 

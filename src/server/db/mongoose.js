@@ -1,5 +1,5 @@
 // Environment configuration
-process.env['NODE_CONFIG_DIR'] = './config';
+process.env.NODE_CONFIG_DIR = './config';
 
 // Module dependencies
 const config = require('config');
@@ -12,7 +12,7 @@ mongoose.connect(
   config.mongoDB.URI,
   { useNewUrlParser: true }
 );
-mongoose.connection.on('error', err => {
+mongoose.connection.on('error', (err) => {
   console.error(err);
 });
 
