@@ -5,7 +5,7 @@ const request = require('supertest');
 
 const { Todo } = require('../models/Todo');
 const { User } = require('../models/User');
-const { app } = require('../server');
+const { app } = require('../index');
 
 const { populateTodos, populateUsers, TODOS, USERS } = require('./seed/seed');
 
